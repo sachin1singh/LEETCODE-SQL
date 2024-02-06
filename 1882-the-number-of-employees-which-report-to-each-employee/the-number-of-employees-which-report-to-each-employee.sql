@@ -2,11 +2,13 @@
 from Employees a inner join Employees b on a.employee_id =b.employee_id 
 order by a.employee_id*/
 
-select m.reports_to as employee_id, 
-       e.name, count(e.employee_id) as reports_count, 
-       round(avg(m.age* 1.0), 0) as average_age 
-from employees m
-left join employees e on e.employee_id = m.reports_to
-where m.reports_to is not null
-group by m.reports_to, e.name
-order by m.reports_to
+SELECT
+    m.reports_to AS employee_id,
+    e.name,
+    COUNT(e.employee_id) AS reports_count,
+    COALESCE(CAST(AVG(m.age) AS UNSIGNED), 0) AS average_age
+FROM employees m
+LEFT JOIN employees e ON e.employee_id = m.reports_to
+WHERE m.reports_to IS NOT NULL
+GROUP BY m.reports_to, e.name
+ORDER BY m.reports_to;
